@@ -1,0 +1,14 @@
+*** ../vim-7.3.033/src/proto/os_win32.pro	2010-08-15 21:57:28.000000000 +0200
+--- src/proto/os_win32.pro	2010-10-22 22:05:35.000000000 +0200
+***************
+*** 1,4 ****
+  /* os_win32.c */
+  int dyn_libintl_init __ARGS((char *libname));
+  void dyn_libintl_end __ARGS((void));
+  void PlatformId __ARGS((void));
+--- 1,5 ----
+  /* os_win32.c */
++ HINSTANCE vimLoadLib __ARGS((char *name));
+  int dyn_libintl_init __ARGS((char *libname));
+  void dyn_libintl_end __ARGS((void));
+  void PlatformId __ARGS((void));

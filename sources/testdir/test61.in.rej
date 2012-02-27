@@ -1,0 +1,21 @@
+*** ../vim-7.3.004/src/testdir/test61.in	2010-08-15 21:57:29.000000000 +0200
+--- src/testdir/test61.in	2010-09-14 12:38:56.000000000 +0200
+***************
+*** 4,9 ****
+  Also tests :earlier and :later.
+  
+  STARTTEST
+  :" Delete three characters and undo
+  Gx:set ul=100
+  x:set ul=100
+--- 4,13 ----
+  Also tests :earlier and :later.
+  
+  STARTTEST
++ :echo undotree().entries
++ ENDTEST
++ 
++ STARTTEST
+  :" Delete three characters and undo
+  Gx:set ul=100
+  x:set ul=100

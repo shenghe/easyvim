@@ -1,0 +1,11 @@
+" The plugin file for EasyVim Project
+
+" Maintainer : HESHENG-PC(sheng.he.china@gmail.com)
+" File : _vimrc
+" Date : 2012/2/20 23:29:08
+
+if filereadable($VIM.'/easyvim/_vimrc')
+    source $VIM/easyvim/_vimrc
+elseif filereadable($VIMRUNTIME."/vimrc_example.vim")
+    source $VIMRUNTIME/vimrc_example.vim
+endif

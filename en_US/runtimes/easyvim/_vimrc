@@ -1,0 +1,391 @@
+" The plugin file for EasyVim Project
+
+" Maintainer : HESHENG-PC(sheng.he.china@gmail.com)
+" File : _vimrc
+" Date : 2012/2/24 12:24:32
+
+if exists('g:EasyVim')
+    finish
+endif
+let g:EasyVim = '1.0'
+
+if v:progname =~? "evim"
+  finish
+endif
+
+" General {{{
+    " compatible  behave very Vi compatible (not advisable)
+    set nocompatible
+    set insertmode
+    set lazyredraw
+    call EVFunc#SetEVPlugin()
+    set diffexpr=EVFunc#diff()
+    set ignorecase smartcase
+    set wrapscan
+    set fdc=1
+    set history=30
+    set iskeyword+=_,$,@,%,#,-
+    set modeline
+    set matchtime=2
+    set magic
+    set nomore
+    set noerrorbells
+    set novisualbell
+    set noshowmode
+    set report=0
+    set showmatch
+    set noshowcmd
+    set helplang=cn,en
+    set spelllang=en_us,en
+    "set smarttab
+    set showtabline=1
+    set t_vb=
+    set wildmenu
+"    set verbose=9
+    set viminfo='10,<10,s10,h,rA:,rB:
+"}}}
+
+" Encoding Settings {{{
+    set langmenu=en_gb.utf-8
+
+    if has ("win32")
+        silent exec "language english" 
+    elseif has ("mac")
+        silent exec "language en_US" 
+    else
+        silent exec "language en_US.utf8" 
+    endif
+
+    if has("win32") || has("win64") || has("win16")
+        set fileformat =dos
+    elseif has("mac")
+        set fileformat =mac
+    else
+        set fileformat =unix
+    endif
+    set fileformats=unix,mac,dos
+
+    if has("multi_byte")
+        set fileencodings=ucs-bom,utf-8,chinese,taiwan,japan,korea,latin1
+        if v:lang =~? '^\(zh\)\|\(ja\)\|\(ko\)' && exists("&ambiwidth")
+            set ambiwidth=double
+        endif
+        if v:lang =~ "^zh_CN"
+            set encoding =chinese
+            set termencoding=chinese
+            if &fileencoding == ''
+              set fileencoding=chinese
+          endif
+        elseif v:lang =~ "^zh_TW"
+            set encoding =taiwan
+            set termencoding=taiwan
+            if &fileencoding == ''
+              set fileencoding=taiwan
+            endif
+        elseif v:lang =~ "^ko"
+            set encoding=korea
+            set termencoding=korea
+            if &fileencoding == ''
+              set fileencoding=korea
+            endif
+        elseif v:lang =~ "^ja_JP"
+            set encoding=japan
+            set termencoding=japan
+            if &fileencoding == ''
+              set fileencoding=japan
+            endif
+        else
+            let &termencoding = &encoding
+            set encoding=utf-8
+            if &fileencoding == ''
+              set fileencoding=utf-8
+            endif
+        endif
+    endif
+"}}}
+
+set foldtext=substitute(getline(v:foldstart),'\"\\s\*\\\|/\\*\\\|\\*/\\\|{{{\\d\\=','','g')
+set foldcolumn=1
+"}}}
+
+"GUI Settings   {{{
+    colorscheme easyvim
+    if has("gui_running")
+        set lines=1000
+        set columns=99999
+        "set guioptions-=T
+        "set guioptions-=m
+        set guioptions +=e
+        set guioptions+=b
+        set guioptions+=f
+        "set guioptions+=g
+        set guioptions -=t
+        set guitablabel =%t
+        set guitabtooltip =%F
+        set confirm
+        set imcmdline
+        set nowrap
+    else
+        set wrap
+    endif
+    if &t_Co > 2 || has("gui_running")
+        set hlsearch 
+    endif
+    if has('mouse')
+        set mouse=a
+        set selection=exclusive
+        set selectmode=mouse,key
+    endif
+    set laststatus=2
+    set shortmess+=aoOstAIW
+    set number
+    set linespace=4
+    exec "set list lcs=tab:--,nbsp:".nr2char(46).",trail:".nr2char(46)
+    set browsedir="last"
+    set cursorline
+    set fillchars=vert:\ ,stl:\ ,stlnc:\ 
+"}}}
+
+"Paths Settings {{{
+    if !exists("g:EVPath")
+        let g:EVPath = $VIM.'/easyvim'
+    endif
+    if !exists("g:EVPluginPath")
+        let g:EVPluginPath = 'runtime'
+    endif
+    try
+        for var in ["backup","swap","verbose"]
+            if !isdirectory(g:EVPath.'/'.var)
+                call mkdir(g:EVPath.'/'.var,'p')
+            endif
+        endfor
+    catch /.*/
+    endtry
+    set backup
+    set swapfile
+    if has('wildignore')
+        set backupskip +=*.iso,*.exe,*.deb,*.bin,*.rar,*.zip,*.gz,*.doc,*.docx,*.png,*.bmp,*.gif,*.7z,*.ppt,*.pdf
+    endif
+    try
+        exe "set backupdir=".substitute(g:EVPath.'/backup','\s','\\\0','g')
+        exe "set directory=".substitute(g:EVPath.'/swap','\s','\\\0','g')
+        if exists("g:debug")
+            exe "set verbosefile=".substitute(g:EVPath.'/verbose/'.localtime().'.txt','\s','\\\0','g')
+        endif
+    catch /.*/
+    endtry
+    if isdirectory('/usr/share/dict/words')
+        set dictionary=/usr/share/dict/words
+    elseif isdirectory('/usr/dict/words')
+        set dictionary=/usr/dict/words
+    else
+        if !isdirectory(g:EVPath.'/dict/words')
+            try
+                call mkdir(g:EVPath.'/dict/words','p')
+            catch /.*/
+            endtry
+        endif
+        exe "set dictionary=".substitute(g:EVPath.'/dict/words','\s','\\\0','g')
+    endif
+    if has('path_extra')
+        set path+=./**2,../
+    endif
+    set tags=./tags;../../../../tags
+"}}}
+
+" Windows and Buffers {{{
+
+    set confirm
+    set hidden
+    set bufhidden=
+    set noautowrite
+    set noautowriteall
+    set cmdheight=1
+    set equalalways
+    set helpheight=0
+    set splitright
+    set cpoptions-=a
+    set autochdir
+    set autoread
+    set viewoptions=folds,options,cursor,slash
+    set sessionoptions=blank,buffers,curdir,folds,globals,help,resize,slash,unix,winpos,winsize
+"}}}
+
+" Editing and Keyboard {{{
+
+    set nojoinspaces
+    set virtualedit=block
+    set timeout
+    set timeoutlen=300
+    set autoindent
+    "set smartindent
+    set cindent
+    set formatoptions=tcr2nmM
+    set shiftwidth=4
+    set softtabstop=4
+    set tabstop=4
+    set expandtab
+    set nobomb
+    set backspace=indent,eol,start
+    set breakat=\ -
+"}}}
+
+"Cscope             {{{
+if has("cscope")
+    set csprg=cscope
+    set csto=0
+    set csqf=s+,g+,c+,d+,i+,t+,e+
+    set nocsverb
+    " add any database in current directory
+    if filereadable("cscope.out")
+        set cst
+        cs add cscope.out
+    " else add database pointed to by environment
+    elseif $CSCOPE_DB != ""
+        cs add $CSCOPE_DB
+    endif
+    set csverb
+
+    nmap <unique> <C-_>s :scs find s <C-R>=expand("<cword>")<CR><CR>
+    nmap <unique> <C-_>g :scs find g <C-R>=expand("<cword>")<CR><CR>
+    nmap <unique> <C-_>c :scs find c <C-R>=expand("<cword>")<CR><CR>
+    nmap <unique> <C-_>t :scs find t <C-R>=expand("<cword>")<CR><CR>
+    nmap <unique> <C-_>e :scs find e <C-R>=expand("<cword>")<CR><CR>
+    nmap <unique> <C-_>f :scs find f <C-R>=expand("<cfile>")<CR><CR>
+    nmap <unique> <C-_>i :scs find i <C-R>=expand("<cfile>")<CR><CR>
+    nmap <unique> <C-_>d :scs find d <C-R>=expand("<cword>")<CR><CR>
+
+    imap <unique> <C-_>s <C-o>:scs find s <C-R>=expand("<cword>")<CR><CR>
+    imap <unique> <C-_>g <C-o>:scs find g <C-R>=expand("<cword>")<CR><CR>
+    imap <unique> <C-_>c <C-o>:scs find c <C-R>=expand("<cword>")<CR><CR>
+    imap <unique> <C-_>t <C-o>:scs find t <C-R>=expand("<cword>")<CR><CR>
+    imap <unique> <C-_>e <C-o>:scs find e <C-R>=expand("<cword>")<CR><CR>
+    imap <unique> <C-_>f <C-o>:scs find f <C-R>=expand("<cfile>")<CR><CR>
+    imap <unique> <C-_>i <C-o>:scs find i <C-R>=expand("<cfile>")<CR><CR>
+    imap <unique> <C-_>d <C-o>:scs find d <C-R>=expand("<cword>")<CR><CR>
+endif
+"}}}
+
+"Plugins    {{{
+    let g:html_ignore_folding =0
+    let g:html_dynamic_folds =1
+    let g:compiler_gcc_ignore_unmatched_lines = 1
+"}}}
+
+"Autocmd    {{{
+    function! ShowMode()
+        if mode() == "n"
+            return "Normal"
+        elseif mode() == "i"
+            return "Insert"
+        elseif mode() == "v" || mode() == "V" || mode() == "CTRL-V"
+            return "Visual"
+        elseif mode() == "s" || mode() == "S" || mode() == "CTRL-S"
+            return "Selective"
+        elseif mode() == "R"
+            return "Replace"
+        elseif mode() == "Rv"
+            return "Replace-Visual"
+        elseif mode() =~ "c" || mode() == "!"
+            return "Cmdline"
+        elseif mode() =~ "r"
+            return "--More--"
+        endif
+    endfunction
+
+    function! GetBom()
+        if &bomb
+            return "\|Bom"
+        endif
+        return ""
+    endfunction
+
+    function! AddPluginMenu()
+        an <silent> 40.10 &Tools.AddPlugin :so %<CR>
+    endfunction
+    if has('autocmd')
+        filetype on | filetype plugin on | filetype indent on | syntax on
+        augroup EasyVim
+        au!
+            autocmd! bufwritepost _vimrc,.vimrc exe 'source '.expand('%:p')
+            autocmd BufReadPost *
+            \ if line("'\"") > 0 && line("'\"") <= line("$") |
+            \   exe "normal g`\"" |
+            \ endif |
+            \if &fenc == '' |
+            \setlocal modifiable    |
+            \ set fenc=utf-8 |
+            \setlocal nomodifiable  |
+            \endif
+            au WinEnter *   call EVFunc#enlargeWin()
+            au GUIEnter * simalt ~x | call EVFunc#SetGuiFont()
+            au BufWinEnter *.vba call AddPluginMenu()
+            if getfsize(expand('%:p')) == -2 || getfsize(expand('%:p')) > 20971520
+                au BufReadCmd <buffer>  call EVFunc#GetLargeFile()
+            endif
+            au BufWinEnter,BufWritePost * if bufname("%") != "" | let b:this_buf_size=getfsize(bufname("%"))/1024
+                        \| else | let b:this_buf_size=0 | endif
+        augroup END
+        try
+            set statusline=%<[%{b:this_buf_size}KB\|%{&ff}\|%{&fileencoding}%{GetBom()}]%=%{ShowMode()}\|%(Line:%l%)\|%(Col:%v%)\|%p%%
+        catch /.*/
+            set statusline=%<[%{&ff}\|%{&fileencoding}%{GetBom()}]%=%{ShowMode()}\|%(Line:%l%)\|%(Col:%v%)\|%p%%
+        endtry
+    else
+        set statusline=%<[%{&ff}\|%{&fileencoding}%{GetBom()}]%=%{ShowMode()}\|%(Line:%l%)\|%(Col:%v%)\|%p%%
+    endif
+"}}}
+
+"MAP  Settings  {{{
+    function! InitCscope()
+        if has("win32") || has("win64") || has("win16")
+            silent! !dir /s /b *.c,*.cc,*.cpp,*.h,*.java > cscope.files
+        else
+            silent! !find -maxdepth 1000 -name "*.[c|h]" >cscope.files
+            silent! !find -maxdepth 1000 -name "*.cpp" >> cscope.files
+            silent! !find -maxdepth 1000 -name "*.java" >>cscope.files
+        endif
+        silent! !cscope -Rb
+        set cst
+        silent! cs add cscope.out
+    endfunction
+    source $VIMRUNTIME/mswin.vim
+    behave mswin
+    imap <silent> <ESC>                                 <C-L>
+    inoremap <silent> <C-Up>                            <C-o>:call EVFunc#ToWin('up')<CR>
+    nnoremap <silent> <C-Up>                            :call EVFunc#ToWin('up')<CR>
+    inoremap <silent> <C-Down>                          <C-o>:call EVFunc#ToWin('down')<CR>
+    nnoremap <silent> <C-Down>                          :call EVFunc#ToWin('down')<CR>
+    inoremap <silent> <C-left>                          <C-o>:call EVFunc#ToWin('left')<CR>
+    nnoremap <silent> <C-left>                          :call EVFunc#ToWin('left')<CR>
+    inoremap <silent> <C-right>                         <C-o>:call EVFunc#ToWin('right')<CR>
+    nnoremap <silent> <C-right>                         :call EVFunc#ToWin('right')<CR>
+    inoremap <silent> <S-left>                          <C-o><C-W>>
+    nnoremap <silent> <S-left>                          <C-W>>
+    inoremap <silent> <S-right>                         <C-o><C-W><
+    nnoremap <silent> <S-right>                         <C-W><
+    inoremap <silent> <S-Up>                            <C-o>:resize +1<CR>
+    nnoremap <silent> <S-Up>                            :resize +1<CR>
+    inoremap <silent> <S-Down>                          <C-o>:resize -1<CR>
+    nnoremap <silent> <S-Down>                          :resize -1<CR>
+    inoremap <silent> <C-Del>                           <C-o>:close!<CR>
+    nnoremap <silent> <C-Del>                           :close!<CR>
+    inoremap <silent> <C-Insert>                        <C-o>:new<CR>
+    nnoremap <silent> <C-Insert>                        :new<CR>
+    inoremap <C-t>                                      <C-l><C-t><ESC>
+    inoremap <C-]>                                      <C-l><C-]><ESC>
+    inoremap <ESC><ESC>                                 <C-o>:
+    nnoremap <ESC><ESC>                                 :
+    inoremap <silent> gf                                <C-o><C-w>gF
+    nnoremap <silent> gf                                <C-w>gF
+    inoremap <silent> <F10>                             <C-o>:silent! !ctags -R .<CR>
+    nnoremap <silent> <F10>                             :silent! !ctags -R .<CR>
+    inoremap <silent> <S-F10>                           <C-o>:call InitCscope()<CR>
+    nnoremap <silent> <S-F10>                           :call InitCscope()<CR>
+    inoremap <silent> <F12>                             <C-o>:wincmd w<CR>
+    nnoremap <silent> <F12>                             :wincmd w<CR>
+    inoremap <silent> <S-F12>                           <C-o>:call EVFunc#ToWin('right')<CR>
+    nnoremap <silent> <S-F12>                           :call EVFunc#ToWin('right')<CR>
+                
+"}}}
+" vim:foldmethod=marker

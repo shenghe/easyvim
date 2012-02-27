@@ -1,0 +1,38 @@
+patten \zs\s*\ze\(=\|+\|!\|-\|\*\|%\|\.\)=
+    
+patten \(=\|+\|!\|-\|\*\|%\|\.\)=\zs\s*\ze
+    
+patten \S\zs\(=\|+\|!\|-\|\*\|%\)=\ze\S
+     \0 
+patten \zs\s\+\ze\(!\|=\)\~
+    
+patten \(!\|=\)\~\zs\s\+\ze
+    
+patten \S\zs\(!\|=\)\~\ze\S
+     \0 
+patten \zs\s\+\ze\((\|)\|{\|}\)
+    
+patten \((\|)\|{\|}\)\zs\s\+\ze
+    
+patten \(if\|wh\%[ile]\)\zs(\ze
+     (
+patten \zs\s\+\ze\(,\|;\)
+    
+patten \(,\|;\)\zs\s\+\ze
+    
+patten \S\zs\(,\|;\)\ze\S
+    \0 
+patten \s\+{
+     {
+patten [^{]\zs{\ze
+     {
+patten \zs\s\+\ze\(&&\|||\)
+    
+patten \(&&\|||\)\zs\s\+\ze
+    
+patten \S\zs\(&&\|||\)\ze\S
+     \0 
+patten \(>\|<\)\zs =\ze
+    =
+patten set\%[local]\s\+\S*\zs\s*=\s\+\ze
+    =

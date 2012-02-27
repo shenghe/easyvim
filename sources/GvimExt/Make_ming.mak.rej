@@ -1,0 +1,19 @@
+*** ../vim-7.3.017/src/GvimExt/Make_ming.mak	2010-09-29 12:37:53.000000000 +0200
+--- src/GvimExt/Make_ming.mak	2010-09-29 18:36:39.000000000 +0200
+***************
+*** 33,39 ****
+  endif
+  endif
+  CXX := $(CROSS_COMPILE)g++
+! WINDRES := $(CROSS_COMPILE)windres --preprocessor="$(CXX) -E -xc" -
+  LIBS :=  -luuid
+  RES  := gvimext.res
+  DEFFILE = gvimext_ming.def
+--- 33,39 ----
+  endif
+  endif
+  CXX := $(CROSS_COMPILE)g++
+! WINDRES := $(CROSS_COMPILE)windres --preprocessor="$(CXX) -E -xc" -DRC_INVOKED
+  LIBS :=  -luuid
+  RES  := gvimext.res
+  DEFFILE = gvimext_ming.def
