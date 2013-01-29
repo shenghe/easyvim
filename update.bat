@@ -11,6 +11,10 @@ IF NOT EXIST "%src_dir%\master" (
 	wget --no-check-certificate %src_url% -P %src_dir%
 )
 
+IF NOT EXIST "%src_dir%" (
+	mkdir %src_dir%
+)
+
 IF EXIST "%src_dir%\master" (
 	@rd /S /R "src_dir%\VIM-master"
 	7z x -y "%src_dir%\master" -o"%src_dir%"

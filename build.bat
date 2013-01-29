@@ -43,6 +43,10 @@ ren tools~.bmp tools.bmp
 
 cd /d "%root%\publish\tools\makensis"
 
+IF NOT EXIST "%root%\publish\release" (
+	mkdir "%root%\publish\release"
+)
+
 IF EXIST "./scripts/EasyVim-win-zh_CN.nsi" (
 	makensis "./scripts/EasyVim-win-zh_CN.nsi"
 )
