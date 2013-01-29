@@ -13,7 +13,21 @@
 ##Feature
 
 ##How To Compile
+  
+### Windows
 
+  1. 从Github上下载[EasyVIM源代码](https://github.com/shenghe/EasyVim/archive/master.zip)并解压;
+  2. 运行build.bat脚本文件;
+  3. 编译成功后, 在`publish\release\`目录下会生成EasyVIM的安装包.
+  
+  *Note:*
+
+  * 系统必须安装Visual Studio 2005-2012;
+  * 系统必须联网,运行安装脚本时会从[Github](https://github.com/shenghe/VIM/archive/master.zip)上下载VIM源代码;
+  * 如果编译过程中提示:`Make_mvc.mak(236): fatal error U1052: 未找到"win32.mak"`,请下载相应的Windows SDK并安装
+
+  
+  
 ##Tutorial
 
 ##About EasyVIM Plugins
@@ -21,4 +35,3 @@
 ##FAQ
 
 ##TODO
-
