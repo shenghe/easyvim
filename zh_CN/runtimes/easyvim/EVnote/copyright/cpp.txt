@@ -1,6 +1,0 @@
-/**
- * @file    `expand("%:t")`
- * @brief   ...
- * @author  `hostname()`
- * @date    `strftime("%c")`
- */

@@ -1,9 +1,0 @@
-patten ^\s*fu\%[nction]!\?\s\+
-    "--------------------------------------------------------------------------
-    " Function : `matchstr(getline(line(".") - 1),'^\s*fu\%[nction]!\?\s\+\zs[^(]\+\ze')`
-    " Purpose  : 
-    " Args     : `matchstr(getline(line(".") - 1),'^[^(]\+(\zs[^)]\+\ze')`
-    " Returns  : nothing
-    " Author   : `hostname()` <sheng.he.china@gmail.com>
-    " Date     : `strftime("%c")`
-    "---------------------------------------------------------------------------

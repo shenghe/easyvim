@@ -1,6 +1,0 @@
-" The plugin file for EasyVim Project
-
-" Maintainer : `hostname()`(sheng.he.china@gmail.com)
-" File : `expand("%:t")`
-" Date : `strftime("%c")`
-

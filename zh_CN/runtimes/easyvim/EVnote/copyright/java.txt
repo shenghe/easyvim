@@ -1,8 +1,0 @@
-/**
- * Description: `expand("%:t")`
- * Copyright: Copyright (c) `strftime("%Y")`
- * Company: Company
- *
- * @author `hostname()`
- * @version 1.0
- */
