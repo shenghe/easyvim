@@ -7,7 +7,8 @@
 if exists('g:EasyVim')
     finish
 endif
-let g:EasyVim = '1.0'
+
+let g:EasyVim = '1.0.0.1'
 
 if v:progname =~? "evim"
   finish
@@ -15,125 +16,12 @@ endif
 
 " General {{{
     " compatible  behave very Vi compatible (not advisable)
-    set nocompatible
-    set insertmode
-    set lazyredraw
     call EVFunc#SetEVPlugin()
     set diffexpr=EVFunc#diff()
-    set ignorecase smartcase
-    set wrapscan
-    set fdc=1
-    set history=30
-    set iskeyword+=_,$,@,%,#,-
-    set modeline
-    set matchtime=2
-    set magic
-    set nomore
-    set noerrorbells
-    set novisualbell
-    set noshowmode
-    set report=0
-    set showmatch
-    set noshowcmd
-    set helplang=cn,en
-    set spelllang=en_us,en
-    "set smarttab
-    set showtabline=1
-    set t_vb=
-    set wildmenu
 "    set verbose=9
     set viminfo='10,<10,s10,h,rA:,rB:
 "}}}
 
-" Encoding Settings {{{
-    if has("win32") || has("win64") || has("win16")
-        set fileformat =dos
-    elseif has("mac")
-        set fileformat =mac
-    else
-        set fileformat =unix
-    endif
-    set fileformats=unix,mac,dos
-
-    if has("multi_byte")
-        set fileencodings=ucs-bom,utf-8,chinese,taiwan,japan,korea,latin1
-        if v:lang =~? '^\(zh\)\|\(ja\)\|\(ko\)' && exists("&ambiwidth")
-            set ambiwidth=double
-        endif
-        if v:lang =~ "^zh_CN"
-            set encoding =chinese
-            set termencoding=chinese
-            if &fileencoding == ''
-              set fileencoding=chinese
-          endif
-        elseif v:lang =~ "^zh_TW"
-            set encoding =taiwan
-            set termencoding=taiwan
-            if &fileencoding == ''
-              set fileencoding=taiwan
-            endif
-        elseif v:lang =~ "^ko"
-            set encoding=korea
-            set termencoding=korea
-            if &fileencoding == ''
-              set fileencoding=korea
-            endif
-        elseif v:lang =~ "^ja_JP"
-            set encoding=japan
-            set termencoding=japan
-            if &fileencoding == ''
-              set fileencoding=japan
-            endif
-        else
-            let &termencoding = &encoding
-            set encoding=utf-8
-            if &fileencoding == ''
-              set fileencoding=utf-8
-            endif
-        endif
-    endif
-"}}}
-
-set foldtext=substitute(getline(v:foldstart),'\"\\s\*\\\|/\\*\\\|\\*/\\\|{{{\\d\\=','','g')
-set foldcolumn=1
-"}}}
-
-"GUI Settings   {{{
-    colorscheme molokai
-    set wrap
-    if has("gui_running")
-        set lines=1000
-        set columns=99999
-        set textwidth=80
-        "set guioptions-=T
-        "set guioptions-=m
-        set guioptions +=e
-        set guioptions-=b
-        set guioptions+=f
-        "set guioptions+=g
-        set guioptions -=t
-        set guitablabel =%t
-        set guitabtooltip =%F
-        set imcmdline        
-    endif
-    if &t_Co > 2 || has("gui_running")
-        set hlsearch 
-    endif
-    if has('mouse')
-        set mouse=a
-        set selection=exclusive
-        set selectmode=mouse,key
-    endif
-    set winaltkeys=no
-    set laststatus=2
-    set shortmess+=aoOstAIW
-    set number
-    set linespace=4
-    "exec "set list lcs=tab:--,nbsp:".nr2char(46).",trail:".nr2char(46)
-    set browsedir="last"
-    set cursorline
-    set fillchars=vert:\ ,stl:\ ,stlnc:\ 
-"}}}
 
 "Paths Settings {{{
     if !exists("g:EVPath")
@@ -176,10 +64,6 @@ set foldcolumn=1
         endif
         exe "set dictionary=".substitute(g:EVPath.'/dict/words','\s','\\\0','g')
     endif
-    if has('path_extra')
-        set path+=./**2,../
-    endif
-    set tags=.,./tags;
 "}}}
 
 " Windows and Buffers {{{
@@ -188,11 +72,10 @@ set foldcolumn=1
     set noconfirm
     set nohidden
     set bufhidden=wipe
-    set noautowrite
-    set noautowriteall
-    set cmdheight=1
+
+
     set equalalways
-    set helpheight=0
+
     set splitright
     set cpoptions-=a
     set autochdir
@@ -215,7 +98,7 @@ set foldcolumn=1
     set softtabstop=4
     set tabstop=4
     set expandtab
-    set nobomb
+
     set backspace=indent,eol,start
     set breakat=\ -
 "}}}
