@@ -111,16 +111,7 @@ Section -EasyVIM
   ${Endif}
 
   SetOutPath "$INSTDIR\lang"
-  File "..\..\..\..\src\vim7.3\VIM-master\runtime\lang\menu_vi_vn.vim"
-  ${If} ${LANGUAGE} == "zh_CN"
-    File "..\..\..\..\src\vim7.3\VIM-master\runtime\lang\menu_chinese*"
-    File "..\..\..\..\src\vim7.3\VIM-master\runtime\lang\menu_zh_cn.*"
-  ${elseif} ${LANGUAGE} == "zh_TW"
-    File /nonfatal "..\..\..\..\src\vim7.3\VIM-master\runtime\lang\menu_chinese*"
-    File /nonfatal "..\..\..\..\src\vim7.3\VIM-master\runtime\lang\menu_zh_tw.*"
-  ${else}
-    File /r "..\..\..\..\src\vim7.3\VIM-master\runtime\lang\*.*"
-  ${Endif}
+  File /r "..\..\..\..\src\vim7.3\VIM-master\runtime\lang\*.*"
 
   SetOutPath "$INSTDIR\plugin"
   File /r "..\..\..\..\src\vim7.3\VIM-master\runtime\plugin\*.*"

@@ -1,6 +1,6 @@
 !define PRODUCT_NAME            "EasyVim"
 !define PRODUCT_VERSION         "1.0.0.1"
-!define VIM_VERSION             "7.3.766"
+!define VIM_VERSION             "7.3.772"
 !define PRODUCT_PUBLISHER       "Henson(sheng.he.china@gmail.com)"
 !define LANGUAGE                "zh_CN"
 !define PRODUCT_DIR_REGKEY      "Software\Microsoft\Windows\CurrentVersion\App Paths\gvim.exe"
@@ -15,7 +15,7 @@ SetCompressor lzma
 !include "WordFunc.nsh"
 
 !define MUI_ABORTWARNING
-!define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\easyvim-install.ico"
+!define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\vim.ico"
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
 
 
@@ -91,8 +91,14 @@ Section -EasyVIM
   File "..\..\..\..\src\easyvim\compiler\nsis.vim"
 
   SetOutPath "$INSTDIR\autoload"
-  File /r "..\..\..\..\src\vim7.3\VIM-master\runtime\autoload\*.*"
+  File "..\..\..\..\src\vim7.3\VIM-master\runtime\autoload\*complete.vim"
+  File "..\..\..\..\src\vim7.3\VIM-master\runtime\autoload\paste.vim"
+  File "..\..\..\..\src\vim7.3\VIM-master\runtime\autoload\tohtml.vim"
+  File "..\..\..\..\src\vim7.3\VIM-master\runtime\autoload\decada.vim"
+  File "..\..\..\..\src\vim7.3\VIM-master\runtime\autoload\ada.vim"
   File /nonfatal /r "..\..\..\..\src\easyvim\autoload\*.*"
+  SetOutPath "$INSTDIR\autoload\xml"
+  File /r "..\..\..\..\src\vim7.3\VIM-master\runtime\autoload\xml\*.*"
 
   SetOutPath "$INSTDIR\ftplugin"
   File /r "..\..\..\..\src\vim7.3\VIM-master\runtime\ftplugin\*.*"
@@ -103,27 +109,19 @@ Section -EasyVIM
   File /nonfatal /r "..\..\..\..\src\easyvim\indent\*.*"
 
   SetOutPath "$INSTDIR\keymap"
-  ${If} ${LANGUAGE} != "zh_CN"
-    File /r "..\..\..\..\src\vim7.3\VIM-master\runtime\keymap\*.*"
-    File /nonfatal /r "..\..\..\..\src\easyvim\keymap\*.*"
-  ${else}
-    File "..\..\..\..\src\vim7.3\VIM-master\runtime\keymap\pinyin.vim"
-  ${Endif}
+  File "..\..\..\..\src\vim7.3\VIM-master\runtime\keymap\pinyin.vim"
+  File /nonfatal /r "..\..\..\..\src\easyvim\keymap\*.*"
 
   SetOutPath "$INSTDIR\lang"
   File "..\..\..\..\src\vim7.3\VIM-master\runtime\lang\menu_vi_vn.vim"
-  ${If} ${LANGUAGE} == "zh_CN"
-    File "..\..\..\..\src\vim7.3\VIM-master\runtime\lang\menu_chinese*"
-    File "..\..\..\..\src\vim7.3\VIM-master\runtime\lang\menu_zh_cn.*"
-  ${elseif} ${LANGUAGE} == "zh_TW"
-    File /nonfatal "..\..\..\..\src\vim7.3\VIM-master\runtime\lang\menu_chinese*"
-    File /nonfatal "..\..\..\..\src\vim7.3\VIM-master\runtime\lang\menu_zh_tw.*"
-  ${else}
-    File /r "..\..\..\..\src\vim7.3\VIM-master\runtime\lang\*.*"
-  ${Endif}
+  File "..\..\..\..\src\vim7.3\VIM-master\runtime\lang\menu_chinese*"
+  File "..\..\..\..\src\vim7.3\VIM-master\runtime\lang\menu_zh_cn.*"
+  File "..\..\..\..\src\vim7.3\VIM-master\runtime\lang\menu_zh_tw.*"
 
   SetOutPath "$INSTDIR\plugin"
-  File /r "..\..\..\..\src\vim7.3\VIM-master\runtime\plugin\*.*"
+  File "..\..\..\..\src\vim7.3\VIM-master\runtime\plugin\tohtml.vim"
+  File "..\..\..\..\src\vim7.3\VIM-master\runtime\plugin\matchparen.vim"
+  File "..\..\..\..\src\vim7.3\VIM-master\runtime\plugin\vimballPlugin.vim"
   File /nonfatal  /r  "..\..\..\..\src\easyvim\plugin\*.*"
 
   SetOutPath "$INSTDIR\snippets"
@@ -153,7 +151,7 @@ Section -Post
 
   #Ìí¼ÓÓÒ¼ü±à¼­²Ëµ¥
   WriteRegStr HKLM  "Software\Vim\Gvim" "path" "$INSTDIR\gvim.exe"
-  WriteRegStr HKCR "*\shell\Edit With EasyVim\command" "" "$INSTDIR\gvim.exe -p --remote-tab-silent %1 %*"
+  WriteRegStr HKCR "*\shell\Edit With EasyVIM\command" "" "$INSTDIR\gvim.exe -p --remote-tab-silent %1 %*"
 
   #×¢²áVisVIM
   ExecShell regsvr32.exe "$INSTDIR\tools\VisVim.dll"
@@ -163,7 +161,7 @@ Section -Post
   StrCpy $1 $INSTDIR
   IfFileExists "$INSTDIR\tools\*.*" Has_TOOLS 0
   Has_TOOLS:
-    StrCpy $1 "$1;$INSTDIR;$INSTDIR\tools;"
+    StrCpy $1 "$1;$INSTDIR;$INSTDIR\tools"
   ${WordAdd} $0 ";" "+$1" $2
   WriteRegExpandStr HKCU "Environment" "PATH" "$2"
 
@@ -212,6 +210,7 @@ Section Uninstall
   Delete "$INSTDIR\optwin.vim"
   Delete "$INSTDIR\rgb.txt"
   Delete "$INSTDIR\termcap"
+  Delete "$INSTDIR\Readme.txt"
 
   RMDir /r /REBOOTOK  "$INSTDIR\autoload"
   RMDir /r /REBOOTOK  "$INSTDIR\colors"
@@ -226,6 +225,8 @@ Section Uninstall
   RMDir /r /REBOOTOK  "$INSTDIR\spell"
   RMDir /r /REBOOTOK  "$INSTDIR\syntax"
   RMDir /r /REBOOTOK  "$INSTDIR\tools"
+  RMDir /r /REBOOTOK  "$INSTDIR\easyvim"
+
   RMDir "$INSTDIR"
 
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
